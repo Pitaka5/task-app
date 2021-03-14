@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Kris\LaravelFormBuilder\FormBuilderTrait;
-use App\Forms\TaskForm;
+use App\Forms\Task\TaskForm;
+use App\Forms\Task\TaskExportForm;
 use App\Repositories\TaskRepository;
+use App\Exports\TaskExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
@@ -26,9 +29,13 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $exportForm = $this->form(TaskExportForm::class, [
+            'method' => 'POST',
+            'url' => route('task.export')
+        ]);
         $list = $this->repository->getList();
 
-        return view('task.index', compact('list'));
+        return view('task.index', compact('list', 'exportForm'));
     }
 
     /**
@@ -104,5 +111,14 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+    }
+
+    public function export()
+    {
+        $form = $this->form(TaskExportForm::class);
+        $form->redirectIfNotValid();
+        list($list, $fileName) = $this->repository->getListForExport();
+
+        return Excel::download(new TaskExport($list), $fileName);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace App\Forms\Task;
 
 use Kris\LaravelFormBuilder\Form;
 
@@ -16,6 +16,7 @@ class TaskForm extends Form
                 'rules' => ['required', 'date_format:Y-m-d'],
             ])
             ->add('time_spent', 'number', [
+                'label' => __('Time spent (in minutes)'),
                 'rules' => 'required|integer|max:10000'
             ])
             ->add('comment', 'textarea', [

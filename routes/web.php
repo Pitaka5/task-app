@@ -32,4 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
         'update' => 'task.update',
         'destroy' => 'task.destroy',
     ]]);
+
+    Route::post('/export', ['uses' => 'TaskController@export', 'as' => 'task.export']);
 });

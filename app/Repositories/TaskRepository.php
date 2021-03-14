@@ -14,6 +14,18 @@ class TaskRepository {
 
     public function getList() {
 
-        return $this->model->where('user_id', auth()->user()->id)->paginate(20);
+        return $this->model->where('user_id', auth()->user()->id)->paginate(1);
+    }
+
+    public function getListForExport() {
+
+        $list = $this->model->where('user_id', auth()->user()->id)
+            ->when(request()->filled('date_from'), function ($query) {
+                $query->whereBetween('date', [request()->input('date_from'), request()->input('date_to')]);
+            })->get();
+
+        $fileName = 'task-report.'.request()->input('type');
+
+        return [$list, $fileName];
     }
 }

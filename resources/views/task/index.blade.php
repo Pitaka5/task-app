@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        {!! form($exportForm) !!}
         <table class="table">
             <thead>
             <tr>
