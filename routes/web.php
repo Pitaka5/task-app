@@ -21,6 +21,15 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+Route::group(['middleware' => ['auth']], function () {
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('task', 'TaskController', ['names' => [
+        'index' => 'task.index',
+        'create' => 'task.create',
+        'store' => 'task.store',
+        'show' => 'task.show',
+        'edit' => 'task.edit',
+        'update' => 'task.update',
+        'destroy' => 'task.destroy',
+    ]]);
+});
