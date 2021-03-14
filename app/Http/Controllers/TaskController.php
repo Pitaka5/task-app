@@ -63,7 +63,7 @@ class TaskController extends Controller
     {
         $form = $this->form(TaskForm::class);
         $form->redirectIfNotValid();
-        Task::create($form->getFieldValues());
+        $this->repository->save($form);
 
         return redirect()->back()->withMessage(__('Created successfully.'));
     }
@@ -110,7 +110,10 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $this->repository->checkIfCanAct($task);
+        $task->delete();
+
+        return redirect()->back()->withMessage(__('Deleted successfully.'));
     }
 
     public function export()

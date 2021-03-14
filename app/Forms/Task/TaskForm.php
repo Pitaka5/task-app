@@ -17,13 +17,10 @@ class TaskForm extends Form
             ])
             ->add('time_spent', 'number', [
                 'label' => __('Time spent (in minutes)'),
-                'rules' => 'required|integer|max:10000'
+                'rules' => 'required|integer|digits_between:1,10'
             ])
             ->add('comment', 'textarea', [
                 'rules' => 'nullable|max:65535'
-            ])
-            ->add('user_id', 'hidden', [
-                'value' => auth()->user()->id,
             ])
             ->add('submit', 'submit', ['label' => 'Create']);
     }

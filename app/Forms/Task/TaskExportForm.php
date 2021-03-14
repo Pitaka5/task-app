@@ -17,8 +17,8 @@ class TaskExportForm extends Form
             ])
             ->add('type', 'choice', [
                 'choices' => [
-                    'csv' => 'csv',
                     'xlsx' => 'xlsx',
+                    'csv' => 'csv',
                     'pdf' => 'pdf',
                 ],
             ])

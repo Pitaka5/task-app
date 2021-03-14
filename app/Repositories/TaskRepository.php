@@ -12,9 +12,16 @@ class TaskRepository {
         $this->model = $model;
     }
 
+    public function save($form) {
+
+        $values = $form->getFieldValues();
+        $values['user_id'] = auth()->user()->id;
+
+        $this->model->create($values);
+    }
     public function getList() {
 
-        return $this->model->where('user_id', auth()->user()->id)->paginate(1);
+        return $this->model->where('user_id', auth()->user()->id)->paginate(10);
     }
 
     public function getListForExport() {
@@ -27,5 +34,12 @@ class TaskRepository {
         $fileName = 'task-report.'.request()->input('type');
 
         return [$list, $fileName];
+    }
+
+    public function checkIfCanAct($item) {
+
+        if ($item->user_id != auth()->user()->id) {
+            abort(404);
+        }
     }
 }
